@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Respiratory Health Index result and recommendations.">
+    <meta name="theme-color" content="#edf5f2">
+    <title>RHI Result | Respiratory Health</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <nav class="navbar" aria-label="Main navigation">
+        <a class="logo" href="/" aria-label="Respiratory Health home">
+            <span class="logo-icon">R</span>
+            <span>Respiratory Health</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="/">Back to home</a>
+        </div>
+    </nav>
+
+    <main class="result-page">
+        <section class="result-header">
+            <p class="section-label">AIR QUALITY REPORT</p>
+            <h1>{{ selected_city }} overview</h1>
+            <p>
+                This estimated Respiratory Health Index reflects the values entered for this location,
+                helping you understand the relative environmental pressure on respiratory health.
+            </p>
+        </section>
+
+        <section class="result-card">
+            <div class="result-label">CURRENT RHI</div>
+            <div class="risk-result risk-badge {{ predicted_risk|lower }}">{{ rhi }}</div>
+            <p class="result-description">
+                <span class="risk-summary">
+                    Risk category: <strong>{{ predicted_risk }}</strong>. This is a model-based estimate built from the selected environmental inputs and should be used as a general awareness signal rather than a medical diagnosis.
+                </span>
+            </p>
+        </section>
+
+        <section class="result-data">
+            <h2>Environmental readings</h2>
+            <div class="result-grid">
+                <div class="result-item">
+                    <span>Temperature</span>
+                    <strong>{{ temperature }}°C</strong>
+                </div>
+                <div class="result-item">
+                    <span>Humidity</span>
+                    <strong>{{ humidity }}%</strong>
+                </div>
+                <div class="result-item">
+                    <span>Wind Speed</span>
+                    <strong>{{ wind_speed }} km/h</strong>
+                </div>
+                <div class="result-item">
+                    <span>PM2.5</span>
+                    <strong>{{ pm25 }} µg/m³</strong>
+                </div>
+                <div class="result-item">
+                    <span>PM10</span>
+                    <strong>{{ pm10 }} µg/m³</strong>
+                </div>
+                <div class="result-item">
+                    <span>NO₂</span>
+                    <strong>{{ no2 }} µg/m³</strong>
+                </div>
+                <div class="result-item">
+                    <span>SO₂</span>
+                    <strong>{{ so2 }} µg/m³</strong>
+                </div>
+                <div class="result-item">
+                    <span>CO</span>
+                    <strong>{{ co }} mg/m³</strong>
+                </div>
+                <div class="result-item">
+                    <span>Ozone</span>
+                    <strong>{{ ozone }} µg/m³</strong>
+                </div>
+                <div class="result-item">
+                    <span>NH₃</span>
+                    <strong>{{ nh3 }} µg/m³</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="disease-guidance" aria-labelledby="disease-title">
+            <p class="section-label">HEALTH RECOMMENDATIONS</p>
+            <h2 id="disease-title">Precautions for the {{ predicted_risk }} RHI class</h2>
+            <p class="guidance-intro">
+                These air-quality precautions are selected for your estimated RHI class
+                and shown for the condition you select. They are general
+                information, not a diagnosis or a replacement for your clinician's advice.
+            </p>
+
+            <label for="disease-search">Search diseases</label>
+            <input
+                id="disease-search"
+                type="search"
+                placeholder="Search a condition..."
+                autocomplete="off"
+                aria-controls="disease-search-results disease-cards"
+                aria-expanded="false"
+            >
+
+            <div id="disease-search-results" class="disease-search-results" role="listbox" hidden></div>
+            <p id="disease-not-found" class="disease-not-found" role="status" hidden>
+                No disease found. Try a different search.
+            </p>
+
+            <div id="disease-cards" class="disease-cards">
+                {% for disease in diseases %}
+                <article class="disease-card" data-name="{{ disease.name|lower }}" hidden>
+                    <h3>{{ disease.name }}</h3>
+                    <ul>
+                        {% for recommendation in disease.recommendations %}
+                        <li>{{ recommendation }}</li>
+                        {% endfor %}
+                    </ul>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <div class="new-prediction">
+            <a href="/" class="predict-button secondary-button">Calculate another location</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-logo">
+            <span class="logo-icon">R</span>
+            <span>Respiratory Health</span>
+        </div>
+
+        <p>Respiratory Health Index · Environmental information only</p>
+
+        <p class="footer-disclaimer">
+            RHI is an estimate based on the entered environmental data. It is not a medical diagnosis or a substitute for professional medical advice.
+        </p>
+    </footer>
+
+    <script>
+        const searchInput = document.getElementById("disease-search");
+        const diseaseCards = Array.from(document.querySelectorAll(".disease-card"));
+        const searchResults = document.getElementById("disease-search-results");
+        const diseaseNotFound = document.getElementById("disease-not-found");
+
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim().toLowerCase();
+            const matches = diseaseCards.filter((card) => card.dataset.name.includes(query));
+
+            diseaseCards.forEach((card) => {
+                card.hidden = true;
+            });
+
+            searchResults.replaceChildren();
+            searchResults.hidden = query === "" || matches.length === 0;
+            diseaseNotFound.hidden = query === "" || matches.length > 0;
+            searchInput.setAttribute("aria-expanded", String(!searchResults.hidden));
+
+            matches.forEach((card) => {
+                const option = document.createElement("button");
+                option.type = "button";
+                option.className = "disease-search-option";
+                option.setAttribute("role", "option");
+                option.textContent = card.querySelector("h3").textContent;
+                option.addEventListener("click", () => {
+                    diseaseCards.forEach((item) => {
+                        item.hidden = item !== card;
+                    });
+                    searchResults.hidden = true;
+                    diseaseNotFound.hidden = true;
+                    searchInput.value = option.textContent;
+                    searchInput.setAttribute("aria-expanded", "false");
+                });
+                searchResults.appendChild(option);
+            });
+        });
+    </script>
+</body>
+
+</html>

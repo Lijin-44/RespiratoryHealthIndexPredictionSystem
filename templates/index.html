@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="Review environmental conditions and calculate an estimated Respiratory Health Index.">
+    <meta name="theme-color" content="#edf5f2">
+
+    <title>Respiratory Health Index | Environmental Assessment</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <nav class="navbar" aria-label="Main navigation">
+        <a class="logo" href="/" aria-label="Respiratory Health home">
+            <span class="logo-icon">R</span>
+            <span>Respiratory Health</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+        </div>
+    </nav>
+
+    <main class="prediction-section">
+        <section class="heading-area professional-hero">
+            <div>
+                <p class="hero-eyebrow">AIR QUALITY INSIGHTS</p>
+                <h1>Understand the air around you</h1>
+            </div>
+
+            <div class="description">
+                <p>
+                    Choose a location, review the latest environmental readings,
+                    and estimate the Respiratory Health Index for better daily awareness.
+                </p>
+            </div>
+        </section>
+
+        <section class="city-card" aria-labelledby="city-heading">
+            <div class="section-label">SELECT CITY</div>
+            <h2 id="city-heading">Choose a location</h2>
+            <p class="section-description">
+                City options are loaded from the environmental dataset.
+            </p>
+
+            <form action="{{ url_for('city_data') }}" method="POST">
+                <div class="city-selection">
+                    <label class="visually-hidden" for="city">City</label>
+
+                    <select id="city" name="city" required>
+                        <option value="">-- Select a city --</option>
+
+                        {% for city in cities %}
+                        <option value="{{ city }}"
+                            {% if selected_city is defined and selected_city == city %}
+                                selected
+                            {% endif %}>
+                            {{ city }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit" class="load-button">
+                        Load data <span aria-hidden="true">→</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        {% if selected_city is defined %}
+        <section class="environment-section" aria-labelledby="environment-heading">
+            <div class="section-label">ENVIRONMENTAL DATA</div>
+            <h2 id="environment-heading">{{ selected_city }}</h2>
+            <p class="section-description">
+                Review the values for this location and adjust them before calculating the RHI.
+            </p>
+
+            <form action="{{ url_for('predict') }}" method="POST">
+                <input type="hidden" name="city" value="{{ selected_city }}">
+
+                <div class="environment-card">
+                    <div class="input-group">
+                        <label for="temperature">Temperature <span>°C</span></label>
+                        <input id="temperature" type="number" step="any" name="temperature" value="{{ temperature }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="humidity">Humidity <span>%</span></label>
+                        <input id="humidity" type="number" min="0" max="100" step="any" name="humidity" value="{{ humidity }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="wind_speed">Wind Speed <span>km/h</span></label>
+                        <input id="wind_speed" type="number" min="0" step="any" name="wind_speed" value="{{ wind_speed }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="pm25">PM2.5 <span>µg/m³</span></label>
+                        <input id="pm25" type="number" min="0" step="any" name="pm25" value="{{ pm25 }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="pm10">PM10 <span>µg/m³</span></label>
+                        <input id="pm10" type="number" min="0" step="any" name="pm10" value="{{ pm10 }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="no2">NO₂ <span>µg/m³</span></label>
+                        <input id="no2" type="number" min="0" step="any" name="no2" value="{{ no2 }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="so2">SO₂ <span>µg/m³</span></label>
+                        <input id="so2" type="number" min="0" step="any" name="so2" value="{{ so2 }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="co">CO <span>mg/m³</span></label>
+                        <input id="co" type="number" min="0" step="any" name="co" value="{{ co }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="ozone">Ozone <span>µg/m³</span></label>
+                        <input id="ozone" type="number" min="0" step="any" name="ozone" value="{{ ozone }}" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="nh3">NH₃ <span>µg/m³</span></label>
+                        <input id="nh3" type="number" min="0" step="any" name="nh3" value="{{ nh3 }}" required>
+                    </div>
+                </div>
+
+                <div class="predict-area">
+                    <button type="submit" class="predict-button">
+                        Calculate RHI <span aria-hidden="true">→</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+        {% endif %}
+    </main>
+
+    <footer>
+        <div class="footer-logo">
+            <span class="logo-icon">R</span>
+            <span>Respiratory Health</span>
+        </div>
+
+        <p>Respiratory Health Index · Environmental information only</p>
+
+        <p class="footer-disclaimer">
+            RHI is an estimate based on the entered environmental data. It is not a medical diagnosis or a substitute for professional medical advice.
+        </p>
+    </footer>
+</body>
+
+</html>

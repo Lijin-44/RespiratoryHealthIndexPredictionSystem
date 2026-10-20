@@ -1,0 +1,976 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #edf5f2;
+    --panel: #ffffff;
+    --panel-soft: #f4f9f7;
+    --card-border: #dfece7;
+    --primary: #1d6f66;
+    --primary-dark: #114f4b;
+    --primary-soft: #e8f5f2;
+    --text: #16312f;
+    --muted: #5f7673;
+    --shadow: 0 18px 40px rgba(18, 53, 47, 0.08);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    background: linear-gradient(180deg, #f4faf7 0%, #edf5f2 100%);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    border: none;
+}
+
+.navbar {
+    height: 76px;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.84);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(22, 49, 47, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.logo-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary), #7ec7ba);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    box-shadow: 0 8px 18px rgba(29, 111, 102, 0.22);
+}
+
+.nav-links a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.prediction-section,
+.result-page,
+footer {
+    width: 88%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.prediction-section {
+    padding: 90px 0 90px;
+}
+
+.heading-area {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: end;
+    margin-bottom: 54px;
+}
+
+.hero-eyebrow,
+.section-label {
+    color: var(--primary);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.heading-area h1 {
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.94;
+    font-weight: 700;
+    letter-spacing: -3px;
+    color: var(--text);
+}
+
+.description {
+    display: flex;
+    align-items: flex-end;
+    min-height: 100%;
+}
+
+.description p,
+.section-description,
+.result-header p,
+.result-description,
+.guidance-intro,
+.recommendation-note,
+.footer-disclaimer {
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.risk-summary {
+    display: inline-block;
+    background: rgba(62, 117, 255, 0.12);
+    border: 1px solid rgba(62, 117, 255, 0.35);
+    border-radius: 10px;
+    padding: 10px 14px;
+    line-height: 1.6;
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px rgba(62, 117, 255, 0.08);
+}
+
+.risk-summary strong {
+    color: #1a4fb8;
+    font-weight: 1000;
+    background: rgba(62, 117, 255, 0.14);
+    border-radius: 6px;
+    padding: 2px 6px;
+}
+
+.city-card,
+.environment-card,
+.result-card,
+.disease-guidance,
+.recommendation-card {
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.city-card {
+    padding: 38px 42px;
+    margin-bottom: 54px;
+}
+
+.city-card h2,
+.environment-section h2,
+.result-data h2,
+.disease-guidance h2 {
+    font-size: clamp(28px, 3vw, 38px);
+    letter-spacing: -1px;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.city-selection {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    margin-top: 26px;
+}
+
+.city-selection select,
+.input-group input,
+#disease-search {
+    width: 100%;
+    min-height: 56px;
+    padding: 0 16px;
+    border: 1px solid #cfe1db;
+    border-radius: 14px;
+    background: #f9fbfa;
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.city-selection select:focus,
+.input-group input:focus,
+#disease-search:focus {
+    border-color: rgba(29, 111, 102, 0.5);
+    box-shadow: 0 0 0 4px rgba(29, 111, 102, 0.08);
+}
+
+.load-button,
+.predict-button,
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 14px;
+    padding: 0 24px;
+    min-height: 56px;
+    background: linear-gradient(135deg, var(--primary) 0%, #2c9f93 100%);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 12px 24px rgba(29, 111, 102, 0.18);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.load-button:hover,
+.predict-button:hover,
+.secondary-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(29, 111, 102, 0.2);
+}
+
+.predict-button span {
+    font-size: 18px;
+}
+
+.environment-section {
+    margin-top: 12px;
+}
+
+.environment-card {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    padding: 28px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-group label {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.input-group label span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.predict-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+}
+
+footer {
+    border-top: 1px solid rgba(22, 49, 47, 0.08);
+    padding: 28px 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.footer-disclaimer {
+    max-width: 520px;
+    font-size: 13px;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.result-page {
+    padding: 90px 0 80px;
+}
+
+.result-header {
+    margin-bottom: 38px;
+    max-width: 740px;
+}
+
+.result-header h1 {
+    font-size: clamp(42px, 5vw, 72px);
+    letter-spacing: -2px;
+    line-height: 1.02;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.result-card {
+    padding: 34px 32px 26px;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, rgba(29, 111, 102, 0.06), rgba(255, 255, 255, 0.9));
+}
+
+.result-label {
+    color: var(--primary-dark);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.risk-result {
+    font-size: clamp(52px, 8vw, 92px);
+    line-height: 1;
+    letter-spacing: -3px;
+    margin-top: 12px;
+    font-weight: 700;
+}
+
+.risk-badge.low {
+    color: #1d7a53;
+}
+
+.risk-badge.moderate {
+    color: #a06a14;
+}
+
+.risk-badge.high {
+    color: #b8572f;
+}
+
+.risk-badge.severe {
+    color: #a12b3c;
+}
+
+.result-data {
+    margin: 30px 0 40px;
+}
+
+.result-grid {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.result-item {
+    background: #f6faf8;
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 20px 18px;
+    min-height: 114px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.result-item span {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.result-item strong {
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.disease-guidance {
+    max-width: 980px;
+    margin: 0 auto 24px;
+    padding: clamp(22px, 3vw, 32px);
+}
+
+.guidance-intro {
+    margin-top: 10px;
+    max-width: 620px;
+}
+
+.disease-guidance label {
+    display: block;
+    margin: 24px 0 10px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+#disease-search {
+    background: #f9fbfa;
+}
+
+.disease-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.disease-search-results {
+    display: grid;
+    gap: 4px;
+    margin-top: 8px;
+    padding: 6px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: var(--shadow);
+}
+
+.disease-search-results[hidden] {
+    display: none;
+}
+
+.disease-search-option {
+    padding: 11px 12px;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+}
+
+.disease-search-option:hover,
+.disease-search-option:focus-visible {
+    background: var(--primary-soft);
+    outline: none;
+}
+
+.disease-card {
+    padding: 20px;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    background: #f9fbfa;
+    line-height: 1.65;
+}
+
+.disease-card[hidden] {
+    display: none;
+}
+
+.disease-card h3 {
+    margin-bottom: 10px;
+    color: var(--primary-dark);
+    font-size: 18px;
+}
+
+.disease-card ul {
+    padding-left: 20px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.disease-card li + li {
+    margin-top: 8px;
+}
+
+.disease-not-found {
+    margin-top: 18px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.new-prediction {
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.secondary-button {
+    padding: 0 28px;
+}
+
+@media (max-width: 900px) {
+    .heading-area,
+    .city-selection,
+    .environment-card,
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .heading-area {
+        gap: 18px;
+    }
+
+    .predict-area {
+        justify-content: stretch;
+    }
+
+    .predict-area .predict-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .prediction-section,
+    .result-page,
+    footer {
+        width: 90%;
+    }
+
+    .navbar {
+        padding: 0 5%;
+    }
+
+    .city-card,
+    .environment-card,
+    .result-card {
+        padding: 22px 18px;
+    }
+
+    footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.06),
+        rgba(255,255,255,0.025)
+    );
+}
+
+
+/* =========================
+   Input
+========================= */
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-group label {
+    display: flex;
+    justify-content: space-between;
+
+    color: #d9ddd9;
+
+    font-size: 13px;
+}
+
+.input-group label span {
+    color: #7f8880;
+    font-size: 12px;
+}
+
+.input-group input {
+    width: 100%;
+    height: 55px;
+
+    padding: 0 16px;
+
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 11px;
+
+    background: #101410;
+    color: #f2f4f0;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.input-group input:focus {
+    border-color: #dce4dc;
+
+    background: #141914;
+}
+
+
+/* =========================
+   Predict Area
+========================= */
+
+.predict-area {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 25px;
+}
+
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+    width: 88%;
+    max-width: 1250px;
+
+    margin: auto;
+
+    padding: 35px 0;
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: #7f8780;
+    font-size: 13px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #dce0dc;
+}
+
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 800px) {
+
+    .prediction-section {
+        width: 90%;
+        padding-top: 65px;
+    }
+
+    .heading-area {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .heading-area h1 {
+        font-size: 58px;
+        letter-spacing: -2px;
+    }
+
+    .city-selection {
+        grid-template-columns: 1fr;
+    }
+
+    .load-button {
+        height: 55px;
+    }
+
+    .environment-card {
+        grid-template-columns: 1fr;
+        padding: 28px;
+    }
+
+    footer {
+        width: 90%;
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+}
+
+/* =========================
+   RESULT PAGE
+========================= */
+
+.result-page {
+    width: 88%;
+    max-width: 1250px;
+    margin: auto;
+    padding: 110px 0 100px;
+}
+
+.result-header {
+    max-width: 850px;
+    margin-bottom: 55px;
+}
+
+.result-header h1 {
+    font-size: clamp(50px, 7vw, 82px);
+    line-height: 0.95;
+    font-weight: 400;
+    letter-spacing: -3px;
+}
+
+.result-header p:not(.section-label) {
+    max-width: 650px;
+    margin-top: 25px;
+    color: #969d97;
+    line-height: 1.7;
+}
+
+
+/* Main result */
+
+.result-card {
+    padding: 55px;
+
+    border-radius: 25px;
+
+    border: 1px solid rgba(255,255,255,0.1);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(182,205,165,0.12),
+            rgba(255,255,255,0.025)
+        );
+
+    margin-bottom: 90px;
+}
+
+.result-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #99a998;
+}
+
+.risk-result {
+    margin-top: 15px;
+
+    font-size: clamp(60px, 9vw, 110px);
+
+    line-height: 1;
+
+    font-weight: 400;
+
+    color: #dcebcf;
+
+    letter-spacing: -4px;
+}
+
+.result-description {
+    max-width: 600px;
+
+    margin-top: 25px;
+
+    color: #969d97;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* Environmental data */
+
+.result-data {
+    margin-bottom: 110px;
+}
+
+.result-data h2 {
+    font-size: 34px;
+    font-weight: 400;
+    margin-bottom: 30px;
+}
+
+.result-grid {
+    display: grid;
+
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 1px;
+
+    background: rgba(255,255,255,0.08);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+}
+
+.result-item {
+    min-height: 120px;
+
+    padding: 25px;
+
+    background: #0c100d;
+}
+
+.result-item span {
+    display: block;
+
+    color: #7f8880;
+
+    font-size: 12px;
+
+    margin-bottom: 18px;
+}
+
+.result-item strong {
+    color: #e7ebe6;
+
+    font-size: 18px;
+
+    font-weight: 400;
+}
+
+
+/* Recommendations */
+
+.recommendation-section {
+    margin-bottom: 90px;
+}
+
+.recommendation-section h2 {
+    font-size: clamp(42px, 5vw, 65px);
+
+    line-height: 1;
+
+    font-weight: 400;
+
+    letter-spacing: -2px;
+}
+
+.recommendation-intro {
+    max-width: 600px;
+
+    margin-top: 25px;
+
+    color: #969d97;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+.recommendation-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 16px;
+
+    margin-top: 50px;
+}
+
+.recommendation-card {
+    min-height: 270px;
+
+    padding: 30px;
+
+    border: 1px solid rgba(255,255,255,0.09);
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.025);
+
+    transition: 0.25s ease;
+}
+
+.recommendation-card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(190,215,175,0.25);
+
+    background: rgba(255,255,255,0.045);
+}
+
+.disease-number {
+    color: #78877a;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+}
+
+.recommendation-card h3 {
+    margin-top: 55px;
+
+    font-size: 26px;
+
+    font-weight: 400;
+}
+
+.recommendation-card p {
+    margin-top: 12px;
+
+    max-width: 500px;
+
+    color: #969d97;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* New prediction */
+
+.new-prediction {
+    display: flex;
+    justify-content: center;
+
+    padding-top: 20px;
+}
+
+
+/* Result responsive */
+
+@media (max-width: 1000px) {
+
+    .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+
+    .result-page {
+        width: 90%;
+        padding-top: 75px;
+    }
+
+    .result-card {
+        padding: 35px 25px;
+    }
+
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recommendation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .result-header h1 {
+        font-size: 55px;
+    }
+}
